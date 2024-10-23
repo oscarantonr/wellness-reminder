@@ -1,0 +1,108 @@
+ {
+    "extName": {
+      "message": "Wellness Reminder",
+      "description": "Nombre de la extensión"
+    },
+    "extDescription": {
+      "message": "Mejora tu productividad y bienestar con recordatorios para hidratarte y levantarte. ¡Tu cuerpo te lo agradecerá!",
+      "description": "Es la descripcion"
+    },
+        "titleHydration": {
+          "message": "Recordatorio de Hidratación",
+          "description": "Este es el título del recordatorio de hidratación"
+        },
+        "titleStandup": {
+          "message": "Levantarse",
+          "description": "Este es el título del recordatorio para levantarse"
+        },
+        "labelMinutes": {
+          "message": "Minutos",
+          "description": "Etiqueta para seleccionar los minutos en el temporizador"
+        },
+        "buttonStart": {
+          "message": "Encender",
+          "description": "Texto del botón para encender el temporizador"
+        },
+        "buttonSave": {
+          "message": "Guardar",
+          "description": "Texto del botón para guardar el temporizador"
+        },
+        "messageWaterStop": {
+          "message": "Temporizador de agua detenido.",
+          "description": "Mensaje que aparece cuando el temporizador de agua está detenido"
+        },
+        "messageWaterStart": {
+          "message": "Temporizador de agua iniciado.",
+          "description": "Mensaje que aparece cuando el temporizador de agua está iniciado"
+        },
+        "messageStandupStop": {
+          "message": "Temporizador de levantarse detenido.",
+          "description": "Mensaje que aparece cuando el temporizador de levantarse está detenido"
+        },
+        "messageStandupStart": {
+          "message": "Temporizador de levantarse iniciado.",
+          "description": "Mensaje que aparece cuando el temporizador de levantarse está iniciado"
+        },
+        "buttonToggleStandup": {
+          "message": "Encender",
+          "description": "Botón para encender el temporizador de levantarse"
+        },
+        "buttonSaveStandup": {
+          "message": "Guardar",
+          "description": "Botón para guardar el temporizador de levantarse"
+        },
+        "off": {
+          "message": "Apagar",
+          "description": "Texto del botón para apagar el temporizador"
+        },
+        "adjustAndSave": {
+          "message": "Ajusta el tiempo y guarda para iniciar el temporizador.",
+          "description": "Instrucción para ajustar y guardar el tiempo antes de iniciar el temporizador"
+        },
+        "waterTimerSaved": {
+          "message": "Temporizador de agua guardado.",
+          "description": "Mensaje que aparece cuando el temporizador de agua se ha guardado"
+        },
+        "standUpTimerSaved": {
+          "message": "Temporizador de levantarse guardado.",
+          "description": "Mensaje que aparece cuando el temporizador de levantarse se ha guardado"
+        },
+        "timeRemaining": {
+          "message": "Quedan",
+          "description": "Texto que muestra el tiempo restante"
+        },
+        "timeUp": {
+          "message": "¡Tiempo de levantarse!",
+          "description": "Mensaje que aparece cuando se termina el temporizador para levantarse"
+        },
+        "next_notification": {
+            "message": "Próxima notificación en {0} minutos y {1} segundos.",
+            "description": "Notificación"
+        },
+          "adjust_time_message": {
+        "message": "Ajusta el tiempo y guarda para iniciar el temporizador.",
+        "description": "Mensaje para ajustar el tiempo antes de iniciar el temporizador."
+        }, 
+          "alertNumberInvalid": {
+            "message": "Por favor, ingresa un número válido para el tiempo en minutos (1-120).",
+            "description": "Notificación"
+          },
+          "notification_stand_up_title": {
+  "message": "¡Levántate!",
+  "description": "Título de la notificación para recordatorio de levantarse"
+},
+"notification_stand_up_message": {
+  "message": "Recuerda caminar unos minutos.",
+  "description": "Mensaje de la notificación para recordatorio de levantarse"
+},
+"notification_hydration_title": {
+  "message": "¡Es hora de hidratarse!",
+  "description": "Título de la notificación para recordatorio de hidratación"
+},
+"notification_hydration_message": {
+  "message": "Recuerda beber agua para mantenerte saludable.",
+  "description": "Mensaje de la notificación para recordatorio de hidratación"
+}
+
+      }
+      

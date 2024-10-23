@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="titlePage">Recordatorio de Hidratación y Movimiento</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            width: 240px;
+            padding: 15px;
+            background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
+            color: #00796b;
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        h3 {
+            margin-bottom: 20px;
+            color: #00695c;
+            font-size: 18px;
+        }
+        label {
+            font-size: 14px;
+            color: #004d40;
+        }
+        input[type="number"] {
+            /* width: 70%; */
+            padding: 5px;
+            /* margin: 10px 0 20px 0; */
+            border: 0px solid #004d40;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 20px;
+        }
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button{
+            -webkit-appearance: none;
+        }
+        #messageWaterStart, #messageWaterStop, #messageStandUpStop, #messageStandUpStart {
+            font-size: 18px;
+            margin: 10px 0;
+            color: #004d40;
+            background-color: #e0f2f1;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .start, .stop {
+    margin-left: 5px;
+    padding: 0;
+    cursor: pointer;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        /* .glass-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+        .glass {
+            position: absolute;
+            width: 80px;
+            height: auto;
+            opacity: 0.2;
+        }
+        .glass:nth-child(1) {
+            top: 10px;
+            left: -5px;
+            transform: rotate(-15deg);
+        }
+        .glass:nth-child(2) {
+            top: 100px;
+            right: -30px;
+            transform: rotate(20deg);
+        }
+        .glass:nth-child(3) {
+            bottom: -30px;
+            left: 50px;
+            transform: rotate(-10deg);
+        } */
+        
+        .glass-container {
+    position: absolute;
+    left: 50px;
+    width: 80px;
+    pointer-events: none;
+    z-index: -1;
+    overflow: hidden;
+    display: table;
+    margin-left: -55px;
+}
+.glass {
+    width: 70px;
+    height: auto;
+    opacity: 0.5;
+}
+        #start.disabled, #startStandUp.disabled, #stop.disabled, #stopStandUp.disabled {
+            background-color: #ccc;
+            color: #666;
+            cursor: not-allowed;
+        }
+        .active {
+            display: block;
+        }
+        .line-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 25px;
+}
+
+.button-input-container {
+    display: flex;
+    flex-direction: row; /* Coloca el label y el input en una sola línea */
+    align-items: center;
+    gap: 0.5rem; /* Espacio entre el label y el input */
+    margin-bottom: 1rem; /* Espacio inferior para separar de los botones */
+}
+
+.button-container {
+    display: flex;
+    flex-direction: row; /* Alinea los botones en una línea */
+    justify-content: center;
+    gap: 1rem; /* Espacio entre los botones */
+    margin-top: 10px;
+}
+
+button {
+    border: none;
+    cursor: pointer;
+}
+
+button.disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+.stop{
+    background-color: red;
+}
+.stop-icon, .player-icon {
+    width: 16px;
+    height: 16px;
+    /* Aquí puedes agregar estilos adicionales para los íconos */
+}
+
+.stop-icon {
+    width: 24px;
+    height: 24px;
+    mask: url('stop.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: white;
+}
+.start{
+    background-color: green;
+}
+.player-icon {
+    width: 24px;
+    height: 24px;
+    mask: url('player-play.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: white;
+}
+
+.minus{
+    width: 24px;
+    height: 24px;
+    mask: url('minus.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: green;
+}
+.plus{
+    width: 24px;
+    height: 24px;
+    mask: url('plus.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: green;
+}
+.button-input-container {
+    /* display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative; */
+    display: flex;
+    flex-direction: column; /* Coloca los elementos en una columna */
+    align-items: center; /* Centra los elementos horizontalmente */
+    width: 70%; /* Asegura que el contenedor tenga un ancho del 100% */
+    gap: 10px; /* Añade espacio entre el input y el slider */
+    margin-bottom: 20px;
+}
+/* .button-input-container label {
+  position: absolute;
+  top: -17px;
+  left: 5px;
+  font-size: 14px;
+  color: black;
+} */
+.button-input-container input:focus ~ label {
+    /* top: -25px; */
+    /* font-size: 10px; */
+}
+.button-input-container #textInput{
+width: 50%;
+display: inline-block;
+}
+.custom-select {
+            position: relative;
+            display: inline-block;
+            width: 200px;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background: white;
+            font-size: 16px;
+            font-family: Arial, sans-serif;
+        }
+
+        .custom-select select option {
+            padding: 10px;
+            background-size: 16px;
+            background-repeat: no-repeat;
+            background-position: left center;
+            padding-left: 30px;
+        }
+
+        .custom-select select option[value="es"] {
+            background-image: url('es.png');
+        }
+
+        .custom-select select option[value="en"] {
+            background-image: url('uk.png');
+        }
+
+        .custom-select select option[value="fr"] {
+            background-image: url('fr.png');
+        }
+
+        .custom-select::after {
+            content: '▼';
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+        }
+        .spacer {
+            flex-grow: 1;
+        }
+        .custom-number-input {
+  height: 2.5rem; /* h-10 */
+  width: 8rem; /* w-32 */
+}
+
+.custom-number-input label {
+  width: 100%; /* w-full */
+  color: #4a5568; /* text-gray-700 */
+  font-size: 0.875rem; /* text-sm */
+  font-weight: 600; /* font-semibold */
+}
+
+.custom-number-input .input-wrapper {
+  display: flex; /* flex */
+  flex-direction: row; /* flex-row */
+  height: 2.5rem; /* h-10 */
+  width: 100%; /* w-full */
+  border-radius: 0.5rem; /* rounded-lg */
+  background-color: transparent; /* bg-transparent */
+  margin-top: 0.25rem; /* mt-1 */
+  position: relative;
+}
+
+.custom-number-input button {
+  background-color: #e2e8f0; /* bg-gray-300 */
+  color: #718096; /* text-gray-600 */
+  height: 100%; /* h-full */
+  width: 5rem; /* w-20 */
+  cursor: pointer; /* cursor-pointer */
+  border: none;
+  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-number-input button:first-child {
+  border-radius: 0.5rem 0 0 0.5rem; /* rounded-l */
+}
+
+.custom-number-input button:last-child {
+  border-radius: 0 0.5rem 0.5rem 0; /* rounded-r */
+}
+
+.custom-number-input button:hover {
+  background-color: #cbd5e0; /* hover:bg-gray-400 */
+  color: #4a5568; /* hover:text-gray-700 */
+}
+
+.custom-number-input button span {
+  margin: auto;
+  font-size: 1.5rem; /* text-2xl */
+  font-weight: 100; /* font-thin */
+}
+
+.custom-number-input input {
+  text-align: center;
+  width: 100%; /* w-full */
+  background-color: #e2e8f0; /* bg-gray-300 */
+  font-weight: 600; /* font-semibold */
+  font-size: 1rem; /* text-md */
+  color: #4a5568; /* text-gray-700 */
+  display: flex; /* flex */
+  align-items: center; /* items-center */
+  border: none;
+  outline: none; /* outline-none */
+  padding: 0;
+}
+
+.custom-number-input input:hover {
+  color: #000; /* hover:text-black */
+}
+
+.custom-number-input input:focus {
+  color: #000; /* focus:text-black */
+}
+
+    </style>
+</head>
+<body>
+    <div class="custom-select">
+        <select id="language-selector">
+            <option value="es" selected>Español</option>
+            <option value="en">🇬🇧 English</option>
+        </select>
+    </div>
+
+    <!-- <h3 id="title-hydration" data-i18n="titleHydration"></h3> -->
+    <div class="line-container">
+        <div class="button-input-container">
+            <div class="custom-number-input">
+                <label for="waterTime" data-i18n="labelMinutes"></label>
+                <div class="input-wrapper">
+                    <button data-action="decrement">
+                        <span>−</span>
+                    </button>
+                    <input type="number" id="waterTime" value="1" min="1" max="120"  name="waterTime">
+                    <button data-action="increment">
+                        <span>+</span>
+                    </button>
+                </div>
+            </div>
+            <!-- <label id="label-minutes" for="waterTime" data-i18n="labelMinutes"></label> -->
+            <!-- <input type="number" id="waterTime" min="1" max="120" value="1" name="waterTime"> -->
+        </div>
+        <div class="glass-container">
+            <img src="glass.png" alt="glass of water" class="glass">
+        </div>
+        <div class="button-container">
+            <button id="stop" class="stop disabled" disabled data-temporizador="agua" data-i18n="buttonStart"><div class="stop-icon"></div></button>
+            <button id="start" class="start"  data-i18n="buttonSave"><div class="player-icon"></div></button>
+        </div>  
+    </div>
+    <div id="messageWaterStop" data-i18n="messageWaterStop" style="display: none;"></div>
+    <div id="messageWaterStart" style="display: none;"></div>
+
+    <!-- <h3 id="title-standup" data-i18n="titleStandup"></h3> -->
+    <div class="line-container">
+        <div class="button-input-container">
+            <div class="custom-number-input">
+                <label for="standUpTime" data-i18n="labelMinutes"></label>
+                <div class="input-wrapper">
+                    <button data-action="decrement">
+                        <span>−</span>
+                    </button>
+                    <input type="number" id="standUpTime" value="1" min="1" max="120"  name="standUpTime">
+                    <button data-action="increment">
+                        <span>+</span>
+                    </button>
+                </div>
+            </div>
+            <!-- <label id="label-minutes-standUp" for="standUpTime" data-i18n="labelMinutes"></label> -->
+            <!-- <input type="number" id="standUpTime" min="1" max="120" value="1"> -->
+        </div>
+        <div class="glass-container">
+            <img src="stand_up.png" alt="glass of water" class="glass">
+        </div>
+        <div class="button-container">
+            <button id="stopStandUp" class="stop disabled" disabled data-temporizador="levantar" data-i18n="buttonStart"><div class="stop-icon"></div></button>
+            <button id="startStandUp" class="start"  data-i18n="buttonSave"><div class="player-icon"></div></button>
+        </div>
+    </div>
+    <div id="messageStandUpStop" data-i18n="messageStandupStop" style="display: none;"></div>
+    <div id="messageStandUpStart"  style="display: none;"></div>
+
+    <script type="module" src="popup.js"></script>
+</body>
+</html>

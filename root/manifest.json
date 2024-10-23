@@ -1,0 +1,39 @@
+{
+    "manifest_version": 3,
+    "name": "__MSG_extName__",
+    "version": "1.0",
+    "description": "__MSG_extDescription__",
+    "permissions": [
+      "notifications", "alarms", "storage"
+    ],
+    "content_scripts": [
+      {
+        "js": ["src/popup.js"],
+        "matches": ["<all_urls>"]
+      }
+    ],
+    "web_accessible_resources": [
+      {
+        "resources": ["_locales/*/messages.json"],
+        "matches": ["<all_urls>"]
+      }
+    ],
+    "background": {
+      "service_worker": "src/background.js"
+    },
+    "default_locale": "es",
+    "action": {
+      "default_popup": "src/popup.html",
+      "default_icon": {
+        "16": "src/glass.png",
+        "48": "src/glass.png",
+        "128": "src/glass.png"
+      }
+    },
+    "icons": {
+      "16": "src/glass.png",
+      "48": "src/glass.png",
+      "128": "src/glass.png"
+    }
+  }
+  

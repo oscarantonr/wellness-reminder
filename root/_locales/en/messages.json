@@ -1,0 +1,109 @@
+{
+  "extName": {
+    "message": "Wellness Reminder",
+    "description": "Extension name"
+  },
+  "extDescription": {
+    "message": "Enhance your productivity and well-being with reminders to hydrate and stand up. Your body will thank you!",
+    "description": "This is a description"
+  },
+    "titleHydration": {
+      "message": "Hydration Reminder",
+      "description": "This is the title of the hydration reminder"
+    },
+    "titleStandup": {
+      "message": "Stand Up",
+      "description": "This is the title of the stand-up reminder"
+    },
+    "labelMinutes": {
+      "message": "Minutes",
+      "description": "Label to select the minutes for the timer"
+    },
+    "buttonStart": {
+      "message": "Start",
+      "description": "Text for the button to start the timer"
+    },
+    "buttonSave": {
+      "message": "Save",
+      "description": "Text for the button to save the timer"
+    },
+    "messageWaterStop": {
+      "message": "Water timer stopped.",
+      "description": "Message displayed when the water timer is stopped"
+    },    
+    "messageWaterStart": {
+      "message": "Water timer has started.",
+      "description": "Message displayed when the water timer is stopped"
+    },
+    "messageStandupStop": {
+      "message": "Stand up timer stopped.",
+      "description": "Message displayed when the stand-up timer is stopped"
+    },
+    "messageStandupStart": {
+      "message": "Stand up timer has started.",
+      "description": "Message displayed when the stand-up timer has started"
+    },
+    "buttonToggleStandup": {
+      "message": "Start",
+      "description": "Button to start the stand-up timer"
+    },
+    "buttonSaveStandup": {
+      "message": "Save",
+      "description": "Button to save the stand-up timer"
+    },
+    "off": {
+      "message": "Off",
+      "description": "Text for the button to turn off the timer"
+    },
+    "adjustAndSave": {
+      "message": "Adjust the time and save to start the timer.",
+      "description": "Instruction to adjust and save time before starting the timer"
+    },
+    "waterTimerSaved": {
+      "message": "Water timer saved.",
+      "description": "Message displayed when the water timer is saved"
+    },
+    "standUpTimerSaved": {
+      "message": "Stand-up timer saved.",
+      "description": "Message displayed when the stand-up timer is saved"
+    },
+    "timeRemaining": {
+      "message": "Remaining",
+      "description": "Text displaying the remaining time"
+    },
+    "timeUp": {
+      "message": "Time to stand up!",
+      "description": "Message displayed when the stand-up timer is up"
+    },
+    "next_notification": {
+      "message": "Next notification in {0} minutes and {1} seconds.",
+      "description": "Notification"
+    },
+  "adjust_time_message": {
+        "message": "Adjust the time and save to start the timer.",
+        "description": "Message for adjusting the time before starting the timer."
+    }, 
+    "alertNumberInvalid": {
+      "message": "Please enter a valid number for the time in minutes (1-120).",
+      "description": "Notification"
+    },
+    "notification_stand_up_title": {
+  "message": "Stand up!",
+  "description": "Notification title for standing reminder"
+},
+"notification_stand_up_message": {
+  "message": "Remember to walk for a few minutes.",
+  "description": "Notification message for standing reminder"
+},
+"notification_hydration_title": {
+  "message": "It's time to hydrate!",
+  "description": "Notification title for hydration reminder"
+},
+"notification_hydration_message": {
+  "message": "Remember to drink water to stay healthy.",
+  "description": "Notification message for hydration reminder"
+}
+
+
+  }
+  

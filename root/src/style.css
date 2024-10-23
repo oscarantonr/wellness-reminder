@@ -1,0 +1,22 @@
+button {
+    padding: 10px;
+    margin: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  #cerrar {
+    background-color: #dc3545;
+  }
+  
+  #cerrar:hover {
+    background-color: #c82333;
+  }
+  
