@@ -246,7 +246,6 @@ function updateCountdown(time, startAlarm) {
     const updateTimer = () => {
         const now = Date.now();
         const remainingTime = (startAlarm + (time * 60 * 1000)) - now;
-        // const messageId = 'messageWaterStart';
 
         if (remainingTime > 0) {
             const remainingMinutes = Math.floor(remainingTime / 1000 / 60);
@@ -254,7 +253,6 @@ function updateCountdown(time, startAlarm) {
             
             const formattedSeconds = remainingSeconds < 10 ? '0' + remainingSeconds : remainingSeconds;
 
-            // document.getElementById(messageId).innerText = `${remainingMinutes} : ${formattedSeconds}`;
         } else {
             clearInterval(cuentaAtrasIntervalId);
 
@@ -281,14 +279,12 @@ function updateCountdownStandUp(time, startAlarm) {
         const updateTimer = () => {
         const now = Date.now();
         const remainingTime = (startAlarm + (time * 60 * 1000)) - now;
-        // const messageId = 'messageStandUpStart';
 
         if (remainingTime > 0) {
             const remainingMinutes = Math.floor(remainingTime / 1000 / 60);
             const remainingSeconds = Math.floor((remainingTime / 1000) % 60);
             const formattedSeconds = remainingSeconds < 10 ? '0' + remainingSeconds : remainingSeconds;
 
-            // document.getElementById(messageId).innerText = `${remainingMinutes} : ${formattedSeconds}`;
         } else {
             clearInterval(countdownIntervalGetUp);
             const newStart = Date.now();
