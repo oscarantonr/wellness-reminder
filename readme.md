@@ -1,4 +1,4 @@
-# 💧 Wellness Reminder - A Health Extension for Google Chrome 💻
+# 💧 Wellness Reminder 💻
 
 > **An extension to support your health while working long hours in front of the computer.**
 
