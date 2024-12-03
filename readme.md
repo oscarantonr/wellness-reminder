@@ -31,5 +31,5 @@
 
 1. Clone this repository to your local machine:
     ```bash
-    git clone https://github.com/username/repo-name.git
+    git clone https://github.com/oscarantonr/wellness-reminder.git
     ```
