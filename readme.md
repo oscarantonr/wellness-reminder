@@ -17,8 +17,6 @@
 -   **🏃‍♂️ Movement Reminder** - Enable an alert that tells you when it’s time to get up and move around, helping to reduce sedentary behavior.
 -   **Fully Customizable** - Choose how often each type of reminder appears. Both reminders are optional and can be independently enabled or disabled.
 
-![Alarm Example](https://link-to-your-demo.gif) <!-- Add a link to a GIF or image showing the notifications -->
-
 ---
 
 ## 🚀 Installation
