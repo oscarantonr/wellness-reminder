@@ -1,9 +1,4 @@
-# 💧 Wellness Reminder - A Health Extension for Screen Time 💻
-
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![Version](https://img.shields.io/github/package-json/v/username/repo-name)
-![Issues](https://img.shields.io/github/issues/username/repo-name)
-![Stars](https://img.shields.io/github/stars/username/repo-name)
+# 💧 Wellness Reminder - A Health Extension for Google Chrome 💻
 
 > **An extension to support your health while working long hours in front of the computer.**
 
