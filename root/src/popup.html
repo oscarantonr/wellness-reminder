@@ -1,149 +1,45 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="titlePage">Recordatorio de Hidratación y Movimiento</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            width: 240px;
-            padding: 15px;
-            background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
-            color: #00796b;
-            text-align: center;
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-            position: relative;
-            overflow: hidden;
-        }
-        h3 {
-            margin-bottom: 20px;
-            color: #00695c;
-            font-size: 18px;
-        }
-        label {
-            font-size: 14px;
-            color: #004d40;
-        }
-        input[type="number"] {
-            /* width: 70%; */
-            padding: 5px;
-            /* margin: 10px 0 20px 0; */
-            border: 0px solid #004d40;
-            border-radius: 5px;
-            text-align: center;
-            font-size: 20px;
-        }
-        input::-webkit-outer-spin-button,
-        input::-webkit-inner-spin-button{
-            -webkit-appearance: none;
-        }
-        #messageWaterStart, #messageWaterStop, #messageStandUpStop, #messageStandUpStart {
-            font-size: 18px;
-            margin: 10px 0;
-            color: #004d40;
-            background-color: #e0f2f1;
-            padding: 10px;
-            border-radius: 5px;
-        }
-        .start, .stop {
-    margin-left: 5px;
-    padding: 0;
-    cursor: pointer;
-    border: none;
-    border-radius: 50%;
-    width: 32px;
-    height: 32px;
-    font-size: 14px;
-    transition: background-color 0.3s ease;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-        button:hover {
-            opacity: 0.9;
-        }
-
-        /* .glass-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-            overflow: hidden;
-        }
-        .glass {
-            position: absolute;
-            width: 80px;
-            height: auto;
-            opacity: 0.2;
-        }
-        .glass:nth-child(1) {
-            top: 10px;
-            left: -5px;
-            transform: rotate(-15deg);
-        }
-        .glass:nth-child(2) {
-            top: 100px;
-            right: -30px;
-            transform: rotate(20deg);
-        }
-        .glass:nth-child(3) {
-            bottom: -30px;
-            left: 50px;
-            transform: rotate(-10deg);
-        } */
-        
-        .glass-container {
-    position: absolute;
-    left: 50px;
-    width: 80px;
-    pointer-events: none;
-    z-index: -1;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title data-i18n="titlePage">Recordatorio de Hidratación y Movimiento</title>
+<style>
+  body {
+    font-family: 'Inter', sans-serif;
+    width: 320px;
+    height: 100%;
+    padding: 5px 10px;
+    background: rgb(174,235,238);
+    text-align: center;
+    position: relative;
     overflow: hidden;
-    display: table;
-    margin-left: -55px;
+    background: #7fd4ad;
+    color: whitesmoke;
 }
-.glass {
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button{
+    -webkit-appearance: none;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+.glass,.walk {
     width: 70px;
     height: auto;
     opacity: 0.5;
 }
-        #start.disabled, #startStandUp.disabled, #stop.disabled, #stopStandUp.disabled {
-            background-color: #ccc;
-            color: #666;
-            cursor: not-allowed;
-        }
-        .active {
-            display: block;
-        }
-        .line-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-top: 25px;
-}
-
-.button-input-container {
-    display: flex;
-    flex-direction: row; /* Coloca el label y el input en una sola línea */
-    align-items: center;
-    gap: 0.5rem; /* Espacio entre el label y el input */
-    margin-bottom: 1rem; /* Espacio inferior para separar de los botones */
-}
 
 .button-container {
     display: flex;
-    flex-direction: row; /* Alinea los botones en una línea */
+    flex-direction: row;
     justify-content: center;
-    gap: 1rem; /* Espacio entre los botones */
-    margin-top: 10px;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    float: left;
 }
 
 button {
@@ -155,251 +51,193 @@ button.disabled {
     cursor: not-allowed;
     opacity: 0.5;
 }
-.stop{
-    background-color: red;
-}
-.stop-icon, .player-icon {
-    width: 16px;
-    height: 16px;
-    /* Aquí puedes agregar estilos adicionales para los íconos */
-}
 
-.stop-icon {
-    width: 24px;
-    height: 24px;
-    mask: url('stop.svg');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-color: white;
-}
-.start{
-    background-color: green;
-}
-.player-icon {
-    width: 24px;
-    height: 24px;
-    mask: url('player-play.svg');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-color: white;
-}
-
-.minus{
-    width: 24px;
-    height: 24px;
-    mask: url('minus.svg');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-color: green;
-}
-.plus{
-    width: 24px;
-    height: 24px;
-    mask: url('plus.svg');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-color: green;
-}
-.button-input-container {
-    /* display: flex;
-    align-items: center;
-    gap: 10px;
-    position: relative; */
-    display: flex;
-    flex-direction: column; /* Coloca los elementos en una columna */
-    align-items: center; /* Centra los elementos horizontalmente */
-    width: 70%; /* Asegura que el contenedor tenga un ancho del 100% */
-    gap: 10px; /* Añade espacio entre el input y el slider */
-    margin-bottom: 20px;
-}
-/* .button-input-container label {
-  position: absolute;
-  top: -17px;
-  left: 5px;
-  font-size: 14px;
-  color: black;
-} */
-.button-input-container input:focus ~ label {
-    /* top: -25px; */
-    /* font-size: 10px; */
-}
-.button-input-container #textInput{
-width: 50%;
-display: inline-block;
-}
-.custom-select {
-            position: relative;
-            display: inline-block;
-            width: 200px;
-        }
-
-        select {
-            width: 100%;
-            padding: 10px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-            appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            background: white;
-            font-size: 16px;
-            font-family: Arial, sans-serif;
-        }
-
-        .custom-select select option {
-            padding: 10px;
-            background-size: 16px;
-            background-repeat: no-repeat;
-            background-position: left center;
-            padding-left: 30px;
-        }
-
-        .custom-select select option[value="es"] {
-            background-image: url('es.png');
-        }
-
-        .custom-select select option[value="en"] {
-            background-image: url('uk.png');
-        }
-
-        .custom-select select option[value="fr"] {
-            background-image: url('fr.png');
-        }
-
-        .custom-select::after {
-            content: '▼';
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            pointer-events: none;
-        }
-        .spacer {
-            flex-grow: 1;
-        }
-        .custom-number-input {
-  height: 2.5rem; /* h-10 */
-  width: 8rem; /* w-32 */
+.custom-number-input {
+    height: 2.5rem;
+    width: 8rem;
 }
 
 .custom-number-input label {
-  width: 100%; /* w-full */
-  color: #4a5568; /* text-gray-700 */
-  font-size: 0.875rem; /* text-sm */
-  font-weight: 600; /* font-semibold */
+    width: 100%;
+    color: whitesmoke;
+    font-size: 0.875rem;
+    font-weight: 600;
 }
 
 .custom-number-input .input-wrapper {
-  display: flex; /* flex */
-  flex-direction: row; /* flex-row */
-  height: 2.5rem; /* h-10 */
-  width: 100%; /* w-full */
-  border-radius: 0.5rem; /* rounded-lg */
-  background-color: transparent; /* bg-transparent */
-  margin-top: 0.25rem; /* mt-1 */
-  position: relative;
+    display: flex;
+    flex-direction: row;
+    height: 2.5rem;
+    width: 100%;
+    border-radius: 0.5rem;
+    background-color: #e2e8f0;
+    margin-top: 0.25rem;
+    position: relative;
 }
 
 .custom-number-input button {
-  background-color: #e2e8f0; /* bg-gray-300 */
-  color: #718096; /* text-gray-600 */
-  height: 100%; /* h-full */
-  width: 5rem; /* w-20 */
-  cursor: pointer; /* cursor-pointer */
-  border: none;
-  outline: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    background-color: #e2e8f0;
+    color: #718096;
+    height: 100%;
+    width: 5rem;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .custom-number-input button:first-child {
-  border-radius: 0.5rem 0 0 0.5rem; /* rounded-l */
+    border-radius: 0.5rem 0 0 0.5rem;
 }
 
 .custom-number-input button:last-child {
-  border-radius: 0 0.5rem 0.5rem 0; /* rounded-r */
+    border-radius: 0 0.5rem 0.5rem 0;
 }
 
 .custom-number-input button:hover {
-  background-color: #cbd5e0; /* hover:bg-gray-400 */
-  color: #4a5568; /* hover:text-gray-700 */
+    background-color: #cbd5e0;
+    color: #4a5568;
 }
 
 .custom-number-input button span {
-  margin: auto;
-  font-size: 1.5rem; /* text-2xl */
-  font-weight: 100; /* font-thin */
+    margin: auto;
+    font-size: 1.5rem;
+    font-weight: 100;
 }
 
 .custom-number-input input {
-  text-align: center;
-  width: 100%; /* w-full */
-  background-color: #e2e8f0; /* bg-gray-300 */
-  font-weight: 600; /* font-semibold */
-  font-size: 1rem; /* text-md */
-  color: #4a5568; /* text-gray-700 */
-  display: flex; /* flex */
-  align-items: center; /* items-center */
-  border: none;
-  outline: none; /* outline-none */
-  padding: 0;
+    text-align: center;
+    width: 100%;
+    background-color: #e2e8f0;
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: #4a5568;
+    display: flex;
+    align-items: center;
+    border: none;
+    outline: none;
+    padding: 0;
 }
 
 .custom-number-input input:hover {
-  color: #000; /* hover:text-black */
+    color: #000;
 }
 
 .custom-number-input input:focus {
-  color: #000; /* focus:text-black */
+    color: #000;
 }
 
-    </style>
+.flex-container > div{
+    padding: 8px;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(1, 1fr);
+    gap: 8px;
+    border-radius: 16px;
+    margin: 12px 0px;
+    background-color: rgba(255,255,255,0.3);
+    backdrop-filter: blur(20px);
+}
+
+.transition{
+    position: relative;
+    overflow: hidden;
+    border-radius: 16px;
+}
+
+.transition::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.5) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    transform: skewX(-45deg);
+    animation: slideShiny 2s ease-out;
+}
+
+@keyframes slideShiny  
+{
+    0% {
+        left: -100%;
+    }
+    100% {
+        left: 100%;
+    }
+}
+    
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="switch.css">
 </head>
 <body>
-    <div class="custom-select">
-        <select id="language-selector">
-            <option value="es" selected>Español</option>
-            <option value="en">🇬🇧 English</option>
-        </select>
+    <h1 id="extension-title" data-i18n="extName"></h1>
+    <div class="container container-water">
+    <div class="flex-container">
+        <div class="item">
+            <div class="icon">
+                <img src="images/glass.png" alt="glass of water" class="glass">
+            </div>
+        </div>
     </div>
-
-    <!-- <h3 id="title-hydration" data-i18n="titleHydration"></h3> -->
-    <div class="line-container">
-        <div class="button-input-container">
-            <div class="custom-number-input">
-                <label for="waterTime" data-i18n="labelMinutes"></label>
-                <div class="input-wrapper">
-                    <button data-action="decrement">
-                        <span>−</span>
-                    </button>
-                    <input type="number" id="waterTime" value="1" min="1" max="120"  name="waterTime">
-                    <button data-action="increment">
-                        <span>+</span>
-                    </button>
+            <div class="flex-container">
+                <div class="custom-number-input">
+                    <label for="waterTime" data-i18n="labelMinutes"></label>
+                    <div class="input-wrapper">
+                        <button data-action="decrement">
+                            <span>−</span>
+                        </button>
+                        <input type="number" id="waterTime" value="1" min="1" max="120"  name="waterTime">
+                        <button data-action="increment">
+                            <span>+</span>
+                        </button>
+                    </div>
                 </div>
             </div>
-            <!-- <label id="label-minutes" for="waterTime" data-i18n="labelMinutes"></label> -->
-            <!-- <input type="number" id="waterTime" min="1" max="120" value="1" name="waterTime"> -->
+            <div class="flex-container">
+            <div class="button-container">
+                <label class="switch">
+                    <input checked="" type="checkbox" id="waterCheckbox">
+                    <div class="slider">
+                        <div class="circle">
+                            <svg class="cross" xml:space="preserve" style="enable-background:new 0 0 512 512" viewBox="0 0 365.696 365.696" y="0" x="0" height="6" width="6" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                                <g>
+                                    <path data-original="#000000" fill="currentColor" d="M243.188 182.86 356.32 69.726c12.5-12.5 12.5-32.766 0-45.247L341.238 9.398c-12.504-12.503-32.77-12.503-45.25 0L182.86 122.528 69.727 9.374c-12.5-12.5-32.766-12.5-45.247 0L9.375 24.457c-12.5 12.504-12.5 32.77 0 45.25l113.152 113.152L9.398 295.99c-12.503 12.503-12.503 32.769 0 45.25L24.48 356.32c12.5 12.5 32.766 12.5 45.247 0l113.132-113.132L295.99 356.32c12.503 12.5 32.769 12.5 45.25 0l15.081-15.082c12.5-12.504 12.5-32.77 0-45.25zm0 0"></path>
+                                </g>
+                            </svg>
+                            <svg class="checkmark" xml:space="preserve" style="enable-background:new 0 0 512 512" viewBox="0 0 24 24" y="0" x="0" height="10" width="10" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                                <g>
+                                    <path class="" data-original="#000000" fill="currentColor" d="M9.707 19.121a.997.997 0 0 1-1.414 0l-5.646-5.647a1.5 1.5 0 0 1 0-2.121l.707-.707a1.5 1.5 0 0 1 2.121 0L9 14.171l9.525-9.525a1.5 1.5 0 0 1 2.121 0l.707.707a1.5 1.5 0 0 1 0 2.121z"></path>
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+                </label>            
+            </div>  
         </div>
-        <div class="glass-container">
-            <img src="glass.png" alt="glass of water" class="glass">
-        </div>
-        <div class="button-container">
-            <button id="stop" class="stop disabled" disabled data-temporizador="agua" data-i18n="buttonStart"><div class="stop-icon"></div></button>
-            <button id="start" class="start"  data-i18n="buttonSave"><div class="player-icon"></div></button>
-        </div>  
     </div>
-    <div id="messageWaterStop" data-i18n="messageWaterStop" style="display: none;"></div>
-    <div id="messageWaterStart" style="display: none;"></div>
 
-    <!-- <h3 id="title-standup" data-i18n="titleStandup"></h3> -->
-    <div class="line-container">
-        <div class="button-input-container">
+    <div class="container container-stand">
+    <div class="flex-container">
+        <div class="item">
+            <div class="icon">
+                <img src="images/walking.png" alt="walk" class="walk">
+            </div>
+        </div>
+    </div>
+
+    <div class="flex-container">
             <div class="custom-number-input">
                 <label for="standUpTime" data-i18n="labelMinutes"></label>
                 <div class="input-wrapper">
@@ -412,20 +250,29 @@ display: inline-block;
                     </button>
                 </div>
             </div>
-            <!-- <label id="label-minutes-standUp" for="standUpTime" data-i18n="labelMinutes"></label> -->
-            <!-- <input type="number" id="standUpTime" min="1" max="120" value="1"> -->
-        </div>
-        <div class="glass-container">
-            <img src="stand_up.png" alt="glass of water" class="glass">
-        </div>
+            </div>
+        <div class="flex-container">
         <div class="button-container">
-            <button id="stopStandUp" class="stop disabled" disabled data-temporizador="levantar" data-i18n="buttonStart"><div class="stop-icon"></div></button>
-            <button id="startStandUp" class="start"  data-i18n="buttonSave"><div class="player-icon"></div></button>
+            <label class="switch">
+                <input checked="" type="checkbox" id="standCheckbox">
+                <div class="slider">
+                    <div class="circle">
+                        <svg class="cross" xml:space="preserve" style="enable-background:new 0 0 512 512" viewBox="0 0 365.696 365.696" y="0" x="0" height="6" width="6" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                            <g>
+                                <path data-original="#000000" fill="currentColor" d="M243.188 182.86 356.32 69.726c12.5-12.5 12.5-32.766 0-45.247L341.238 9.398c-12.504-12.503-32.77-12.503-45.25 0L182.86 122.528 69.727 9.374c-12.5-12.5-32.766-12.5-45.247 0L9.375 24.457c-12.5 12.504-12.5 32.77 0 45.25l113.152 113.152L9.398 295.99c-12.503 12.503-12.503 32.769 0 45.25L24.48 356.32c12.5 12.5 32.766 12.5 45.247 0l113.132-113.132L295.99 356.32c12.503 12.5 32.769 12.5 45.25 0l15.081-15.082c12.5-12.504 12.5-32.77 0-45.25zm0 0"></path>
+                            </g>
+                        </svg>
+                        <svg class="checkmark" xml:space="preserve" style="enable-background:new 0 0 512 512" viewBox="0 0 24 24" y="0" x="0" height="10" width="10" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                            <g>
+                                <path class="" data-original="#000000" fill="currentColor" d="M9.707 19.121a.997.997 0 0 1-1.414 0l-5.646-5.647a1.5 1.5 0 0 1 0-2.121l.707-.707a1.5 1.5 0 0 1 2.121 0L9 14.171l9.525-9.525a1.5 1.5 0 0 1 2.121 0l.707.707a1.5 1.5 0 0 1 0 2.121z"></path>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+            </label> 
         </div>
     </div>
-    <div id="messageStandUpStop" data-i18n="messageStandupStop" style="display: none;"></div>
-    <div id="messageStandUpStart"  style="display: none;"></div>
-
+    </div>
     <script type="module" src="popup.js"></script>
 </body>
 </html>

@@ -1,8 +1,7 @@
-// Create the notification
 function createAlarm(data, type, notificationTitle, notificationMessage) {
     const alarmInfo = {
-        delayInMinutes: parseFloat(data.tiempo), // Retraso inicial
-        periodInMinutes: parseFloat(data.tiempo) // Repetir cada X minutos
+        delayInMinutes: parseFloat(data.tiempo),
+        periodInMinutes: parseFloat(data.tiempo)
     };
     chrome.alarms.create(type, alarmInfo);
 
@@ -13,35 +12,9 @@ function createAlarm(data, type, notificationTitle, notificationMessage) {
 }
 
 function showNotification(type, title, message) {
-    // if(tipo === 'reminderHydrate'){
-    //     chrome.notifications.create({
-    //         type: 'basic',
-    //         iconUrl: 'glass.png',
-    //         title: '¡Es hora de hidratarse!',
-    //         message: 'Recuerda beber agua para mantenerte saludable.',
-    //         priority: 2
-    //     });
-    // } else {
-    //     chrome.notifications.create({
-    //         type: 'basic',
-    //         iconUrl: 'stand_up.png',
-    //         title: '¡Levántate!',
-    //         message: 'Recuerda caminar unos minutos.',
-    //         priority: 2
-    //     });
-    // }
-
-    // if (type === 'reminderHydrate') {
-    //     title = title;
-    //     message = message;
-    // } else if (type === 'reminderGetUp') {
-    //     title = title;
-    //     message = message;
-    // }
-
     chrome.notifications.create({
         type: 'basic',
-        iconUrl: type === 'reminderHydrate' ? 'glass.png' : 'stand_up.png',
+        iconUrl: type === 'reminderHydrate' ? 'images/glass.png' : 'images/walking.png',
         title: title,
         message: message,
         priority: 2
@@ -60,22 +33,17 @@ chrome.alarms.onAlarm.addListener((alarm) => {
             const notificationTitle = translations.notification_stand_up_title.message;
             const notificationMessage = translations.notification_stand_up_message.message;
 
-        // chrome.storage.sync.get(['notificationTitle', 'notificationMessage'], (data) => {
             showNotification('reminderGetUp', notificationTitle, notificationMessage);
-        // });
     }
 });
 });
 
-
-// Listener para el evento "onInstalled" (instalación o actualización de la extensión)
 chrome.runtime.onInstalled.addListener(() => {
     chrome.storage.sync.set({ extensionJustActivated: true }, () => {
     });
     chrome.storage.sync.set({ startAlarm: null, timeHydrate: null, timeGetUp: null });
 });
 
-// Listener para recibir mensajes del popup (para actualizar el tiempo, encender y apagar el temporizador)
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === 'saveNewHydration_Time') {
         chrome.storage.sync.set({
@@ -121,7 +89,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         });
     }
 
-    //Restart time
     if (request.action === 'turnOffTimer_hydrate') {
         chrome.alarms.clear('reminderHydrate', () => {
             chrome.storage.sync.set({ hydration_start_alarm: null });
@@ -140,9 +107,7 @@ chrome.runtime.onStartup.addListener(() => {
     chrome.storage.sync.set({
         timerOn_hydration: false,
         hydration_time: 1,
-        hydration_start_alarm: null
-    });
-    chrome.storage.sync.set({
+        hydration_start_alarm: null,
         startTimer_getUp: false,
         time_getUp: 1,
         getUp_start_alarm: null

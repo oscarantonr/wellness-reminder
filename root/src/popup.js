@@ -2,15 +2,11 @@ import { initInputComponent } from './inputComponent.js';
 let cuentaAtrasIntervalId;
 let countdownIntervalGetUp;
 
-const languageSelector = document.getElementById('language-selector');
-
-languageSelector.addEventListener('change', (event) => {
-    const lang = event.target.value;
-
-    chrome.storage.sync.set({ language: lang }, () => {
-        changeLanguage(lang);
-    });
-});
+function getDefaultLanguage() {
+    const browserLanguage = navigator.language || navigator.userLanguage; // Detecta el idioma del navegador
+    const lang = browserLanguage.startsWith('es') ? 'es' : (browserLanguage.startsWith('en') ? 'en' : 'en');
+    return lang;
+}
 
 function loadTranslations(lang) {
     return new Promise((resolve, reject) => {
@@ -74,25 +70,23 @@ function showAlertInvalidNumber() {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    const buttonStop = document.getElementById('stop');
-    const buttonStopStandUp = document.getElementById('stopStandUp');
-    const buttonStart = document.getElementById('start');
-    const buttonStartStandUp = document.getElementById('startStandUp');
     const timeInputWater = document.getElementById('waterTime');
     const timeInputStandUp = document.getElementById('standUpTime');
-    const inputs = [document.getElementById('waterTime'), document.getElementById('standUpTime')];
-    let startButtonPressed = false;
-    let stopButtonPressed = false;
-    const rangeInput = document.getElementById('waterTime');
-    const textInput = document.getElementById('textInput');
+    let startButtonPressed, startButtonGetStandUp = false;
+    let stopButtonPressed, stopButtonGetStandUp = false;
+    const checkboxWater = document.getElementById('waterCheckbox');
+    const checkboxStand = document.getElementById('standCheckbox');
+
+    checkboxWater.checked = false;
+    checkboxStand.checked = false;
 
     initInputComponent();
 
     window.onload = function() {
     chrome.storage.sync.get(['extensionJustActivated'], function (result) {
         if (result.extensionJustActivated) {
-            buttonStop.click();
-            buttonStopStandUp.click();
+            const lang = getDefaultLanguage();
+            changeLanguage(lang);
             chrome.storage.sync.set({ extensionJustActivated: false });
         }
     });
@@ -100,174 +94,105 @@ document.addEventListener('DOMContentLoaded', function () {
     
     chrome.storage.sync.get(['language'], (result) => {
         const lang = result.language || 'es';
-        languageSelector.value = lang;
         changeLanguage(lang);
     });
     
     chrome.storage.sync.get([`timerOn_hydration`], function (data) {
         if (data[`timerOn_hydration`]) {
-            buttonStop.classList.remove('disabled');
-            buttonStop.disabled = false;
-            buttonStart.classList.add('disabled');
-            buttonStart.disabled = true;
-        } else {
-            buttonStop.classList.add('disabled');
-            buttonStop.disabled = true;
-            buttonStart.classList.remove('disabled');
-            buttonStart.disabled = false;
+            checkboxWater.checked = true;
+            document.getElementsByClassName('container-water')[0].classList.add('transition');
         }
     });
 
     chrome.storage.sync.get([`startTimer_getUp`], function (data) {
         if (data[`startTimer_getUp`]) {
-            buttonStopStandUp.classList.remove('disabled');
-            buttonStopStandUp.disabled = false;
-            buttonStartStandUp.classList.add('disabled');
-            buttonStartStandUp.disabled = true;
-        } else {
-            buttonStopStandUp.classList.add('disabled');
-            buttonStopStandUp.disabled = true;
-            buttonStartStandUp.classList.remove('disabled');
-            buttonStartStandUp.disabled = false;
+            checkboxStand.checked = true;
+            document.getElementsByClassName('container-stand')[0].classList.add('transition');
         }
     });
-
-    buttonStop.classList.add('disabled');
-    buttonStopStandUp.classList.add('disabled');
 
     function actualizarEstadoUI() {
         chrome.storage.sync.get([`timerOn_hydration`, `hydration_time`, `hydration_start_alarm`, `startButtonPressed_hydration`], function (data) {
             if (data[`startButtonPressed_hydration`]) {
-                document.getElementById('messageWaterStop').style.display = 'none';
-                document.getElementById('messageWaterStart').style.display = 'block';
-    
                 if (data[`hydration_start_alarm`] && data[`hydration_time`]) {
                     updateCountdown(data[`hydration_time`], data[`hydration_start_alarm`], 'messageWaterStart');
                 }
-            } else {
-                buttonStart.disabled = false;
-                buttonStart.classList.remove('disabled');
-                document.getElementById('messageWaterStart').style.display = 'none';
             }
     
             chrome.storage.sync.get([`startTimer_getUp`, `time_getUp`, `getUp_start_alarm`, `startButtonPressed_GetUp`], function (dataGetUp) {
                 if (dataGetUp[`startButtonPressed_GetUp`]) {
-                    document.getElementById('messageStandUpStop').style.display = 'none';
-                    document.getElementById('messageStandUpStart').style.display = 'block';
-    
                     if (dataGetUp[`getUp_start_alarm`] && dataGetUp[`time_getUp`]) {
                         updateCountdownStandUp(dataGetUp[`time_getUp`], dataGetUp[`getUp_start_alarm`], 'messageStandUpStart');
                     }
-                } else {
-                    buttonStartStandUp.disabled = false;
-                    buttonStartStandUp.classList.remove('disabled');
-                    // document.getElementById('messageStandUpStop').style.display = 'block';
-                    document.getElementById('messageStandUpStart').style.display = 'none';
                 }
             });
         });
     }
-    
-    
-
-    buttonStop.addEventListener('click', function () {
-        stopButtonPressed = true;
-            chrome.runtime.sendMessage({ action: `turnOffTimer_hydrate` }, function () {
-                if (stopButtonPressed) {
-                // buttonStop.classList.add('stop');
-                // buttonStop.classList.remove('apagar');
-                chrome.storage.sync.set({ [`timerOn_hydration`]: false });
-                chrome.storage.sync.set({ [`startButtonPressed_hydration`]: false });
-                clearInterval(cuentaAtrasIntervalId); // Limpiar el intervalo del temporizador
-                // document.getElementById('messageWaterStop').style.display = 'block';
-                document.getElementById('messageWaterStart').style.display = 'none';
-                buttonStart.disabled = false;
-                buttonStart.classList.remove('disabled');
-                buttonStop.disabled = true;
-                buttonStop.classList.add('disabled');
-                chrome.storage.sync.remove([`hydration_start_alarm`], function() {
-                    console.log('Notificaciones deshabilitadas.');
-                });
-            } else{
-                
-            }
-            });
-    });
-
-    buttonStopStandUp.addEventListener('click', function () {
-        stopButtonPressed = true; 
-
-            chrome.runtime.sendMessage({ action: `turnOffTimer_getUp` }, function () {
-                if (stopButtonPressed) {
-                    // buttonStopStandUp.classList.add('stop');
-                    // buttonStopStandUp.classList.remove('apagar');
-                    chrome.storage.sync.set({ [`startTimer_getUp`]: false });
-                    chrome.storage.sync.set({ [`startButtonPressed_GetUp`]: false });            
-                    clearInterval(countdownIntervalGetUp);
-                    // document.getElementById('messageStandUpStop').style.display = 'block';
-                    document.getElementById('messageStandUpStart').style.display = 'none';
-                    
-                    buttonStartStandUp.disabled = false;
-                    buttonStartStandUp.classList.remove('disabled');
-                    buttonStopStandUp.disabled = true;
-                    buttonStopStandUp.classList.add('disabled');
-
-                    chrome.storage.sync.remove([`getUp_start_alarm`], function () {
-                        console.log('Notificaciones deshabilitadas.');
-                    });
-                }
-            });
-    });
-    
-buttonStart.addEventListener('click', function () {
-    const time = parseInt(timeInputWater.value);
-    const startAlarm = Date.now();  // Momento actual
-    startButtonPressed = true;
-
-    if (isNaN(time) || time < 1 || time > 120) {
-        showAlertInvalidNumber();
-        return;
-    }
-
-    updateCountdown(time); 
-
-    chrome.storage.sync.set({ 
-        [`timerOn_hydration`]: true,
-        [`hydration_time`]: time,
-        [`hydration_start_alarm`]: startAlarm,
-        [`startButtonPressed_hydration`]: true
-    }, () => {
-        chrome.runtime.sendMessage({
-            action: `saveNewHydration_Time`,
-            tiempo: time,
-            notificationTitle: chrome.i18n.getMessage('notification_hydrate_title'),
-            notificationMessage: chrome.i18n.getMessage('notification_hydrate_message') 
-        }, function (response) {
-            if (response.success) {
-                console.log("Sincronización completa.");
-            }
-        });
-    });
-
-    if (startButtonPressed) {
-        buttonStop.disabled = false;
-        buttonStop.classList.remove('disabled');
-        buttonStart.disabled = true;
-        buttonStart.classList.add('disabled');
-        document.getElementById('messageWaterStop').style.display = 'none';
-        document.getElementById('messageWaterStart').style.display = 'block';
-        actualizarEstadoUI();
-    }
-});
-
-    
-
-    buttonStartStandUp.addEventListener('click', function () {
-        const time = parseInt(timeInputStandUp.value);
+        
+checkboxWater.addEventListener('change', function() {
+    if(checkboxWater.checked){
+        const time = parseInt(timeInputWater.value);
         const startAlarm = Date.now();
+        startButtonPressed = true;
+        document.getElementsByClassName('container-water')[0].classList.add('transition');
     
         if (isNaN(time) || time < 1 || time > 120) {
             showAlertInvalidNumber();
+            checkboxWater.checked = false;
+            document.getElementsByClassName('container-water')[0].classList.remove('transition');
+            return;
+        }
+    
+        updateCountdown(time); 
+    
+        chrome.storage.sync.set({ 
+            [`timerOn_hydration`]: true,
+            [`hydration_time`]: time,
+            [`hydration_start_alarm`]: startAlarm,
+            [`startButtonPressed_hydration`]: true
+        }, () => {
+            chrome.runtime.sendMessage({
+                action: `saveNewHydration_Time`,
+                tiempo: time,
+                notificationTitle: chrome.i18n.getMessage('notification_hydrate_title'),
+                notificationMessage: chrome.i18n.getMessage('notification_hydrate_message') 
+            }, function (response) {
+                if (response.success) {
+                    console.log("Sincronización completa.");
+                }
+            });
+        });
+    
+        if (startButtonPressed) {            
+            actualizarEstadoUI();
+        }
+    } else {
+        stopButtonPressed = true;
+        document.getElementsByClassName('container-water')[0].classList.remove('transition');
+        chrome.runtime.sendMessage({ action: `turnOffTimer_hydrate` }, function () {
+            if (stopButtonPressed) {
+            chrome.storage.sync.set({ [`timerOn_hydration`]: false });
+            chrome.storage.sync.set({ [`startButtonPressed_hydration`]: false });
+            clearInterval(cuentaAtrasIntervalId);
+            chrome.storage.sync.remove([`hydration_start_alarm`], function() {
+                console.log('Notificaciones deshabilitadas.');
+            });
+        } 
+        });
+    }
+})
+
+checkboxStand.addEventListener('click', function () {
+    if(checkboxStand.checked){
+        const time = parseInt(timeInputStandUp.value);
+        const startAlarm = Date.now();
+        startButtonGetStandUp = true;
+        document.getElementsByClassName('container-stand')[0].classList.add('transition');
+
+        if (isNaN(time) || time < 1 || time > 120) {
+            showAlertInvalidNumber();
+            checkboxStand.checked = false;
+            document.getElementsByClassName('container-stand')[0].classList.remove('transition');
             return;
         }
         
@@ -282,25 +207,33 @@ buttonStart.addEventListener('click', function () {
             chrome.runtime.sendMessage({ 
                 action: `saveNewTimeGetUp`, 
                 tiempo: time, 
-                notificationTitle: chrome.i18n.getMessage('notification_stand_up_title'), // Título de la notificación traducido
-                notificationMessage: chrome.i18n.getMessage('notification_stand_up_message') // Mensaje de la notificación traducido
+                notificationTitle: chrome.i18n.getMessage('notification_stand_up_title'),
+                notificationMessage: chrome.i18n.getMessage('notification_stand_up_message')
             }, function (response) {
                 if (response.success) {
                 }
             });
         });
     
-            buttonStopStandUp.disabled = false;
-            buttonStopStandUp.classList.remove('disabled');
-            buttonStartStandUp.disabled = true;
-            buttonStartStandUp.classList.add('disabled');
-            document.getElementById('messageStandUpStop').style.display = 'none';
-            document.getElementById('messageStandUpStart').style.display = 'block';
-            actualizarEstadoUI();
-    });
-    
-    
-    actualizarEstadoUI();
+            if (startButtonGetStandUp) {
+                actualizarEstadoUI();
+            }
+    } else {
+        stopButtonGetStandUp = true;
+        document.getElementsByClassName('container-stand')[0].classList.remove('transition');
+        chrome.runtime.sendMessage({ action: `turnOffTimer_getUp` }, function () {
+            if (stopButtonGetStandUp) {
+            chrome.storage.sync.set({ [`startTimer_getUp`]: false });
+            chrome.storage.sync.set({ [`startButtonPressed_GetUp`]: false });
+            clearInterval(cuentaAtrasIntervalId);
+            chrome.storage.sync.remove([`getUp_start_alarm`], function() {
+                console.log('Notificaciones deshabilitadas.');
+            });
+        } 
+        });
+    }
+});
+actualizarEstadoUI();
 });
 
 function updateCountdown(time, startAlarm) {
@@ -313,7 +246,7 @@ function updateCountdown(time, startAlarm) {
     const updateTimer = () => {
         const now = Date.now();
         const remainingTime = (startAlarm + (time * 60 * 1000)) - now;
-        const messageId = 'messageWaterStart';
+        // const messageId = 'messageWaterStart';
 
         if (remainingTime > 0) {
             const remainingMinutes = Math.floor(remainingTime / 1000 / 60);
@@ -321,7 +254,7 @@ function updateCountdown(time, startAlarm) {
             
             const formattedSeconds = remainingSeconds < 10 ? '0' + remainingSeconds : remainingSeconds;
 
-            document.getElementById(messageId).innerText = `${remainingMinutes} : ${formattedSeconds}`;
+            // document.getElementById(messageId).innerText = `${remainingMinutes} : ${formattedSeconds}`;
         } else {
             clearInterval(cuentaAtrasIntervalId);
 
@@ -338,7 +271,6 @@ function updateCountdown(time, startAlarm) {
     cuentaAtrasIntervalId = setInterval(updateTimer, 1000);
 }
 
-
 function updateCountdownStandUp(time, startAlarm) {
     if (!startAlarm) {
         startAlarm = Date.now();
@@ -349,14 +281,14 @@ function updateCountdownStandUp(time, startAlarm) {
         const updateTimer = () => {
         const now = Date.now();
         const remainingTime = (startAlarm + (time * 60 * 1000)) - now;
-        const messageId = 'messageStandUpStart';
+        // const messageId = 'messageStandUpStart';
 
         if (remainingTime > 0) {
             const remainingMinutes = Math.floor(remainingTime / 1000 / 60);
             const remainingSeconds = Math.floor((remainingTime / 1000) % 60);
             const formattedSeconds = remainingSeconds < 10 ? '0' + remainingSeconds : remainingSeconds;
 
-            document.getElementById(messageId).innerText = `${remainingMinutes} : ${formattedSeconds}`;
+            // document.getElementById(messageId).innerText = `${remainingMinutes} : ${formattedSeconds}`;
         } else {
             clearInterval(countdownIntervalGetUp);
             const newStart = Date.now();
