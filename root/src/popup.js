@@ -3,7 +3,8 @@ let cuentaAtrasIntervalId;
 let countdownIntervalGetUp;
 
 function getDefaultLanguage() {
-    const browserLanguage = navigator.language || navigator.userLanguage; // Detecta el idioma del navegador
+    const browserLanguage = navigator.language;
+    console.log("test lang: " + browserLanguage);
     const lang = browserLanguage.startsWith('es') ? 'es' : (browserLanguage.startsWith('en') ? 'en' : 'en');
     return lang;
 }
