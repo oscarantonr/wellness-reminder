@@ -81,6 +81,15 @@ document.addEventListener('DOMContentLoaded', function () {
     checkboxWater.checked = false;
     checkboxStand.checked = false;
 
+    chrome.storage.sync.get(['hydration_time', 'time_getUp'], function (data) {
+        if (data.hydration_time) {
+            timeInputWater.value = data.hydration_time;
+        }
+        if (data.time_getUp) {
+            timeInputStandUp.value = data.time_getUp;
+        }
+    });
+    
     initInputComponent();
 
     window.onload = function() {
@@ -234,6 +243,24 @@ checkboxStand.addEventListener('click', function () {
         });
     }
 });
+timeInputWater.addEventListener('input', function () {
+    const time = parseInt(timeInputWater.value);
+    if (!isNaN(time) && time >= 1 && time <= 120) {
+        chrome.storage.sync.set({ hydration_time: time }, () => {
+            console.log('Tiempo de hidratación guardado:', time);
+        });
+    }
+});
+
+timeInputStandUp.addEventListener('input', function () {
+    const time = parseInt(timeInputStandUp.value);
+    if (!isNaN(time) && time >= 1 && time <= 120) {
+        chrome.storage.sync.set({ time_getUp: time }, () => {
+            console.log('Tiempo para levantarse guardado:', time);
+        });
+    }
+});
+
 actualizarEstadoUI();
 });
 
