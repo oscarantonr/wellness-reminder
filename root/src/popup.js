@@ -360,5 +360,3 @@ function decrement(e) {
     });
   }
   
-  export { initInputComponent };
-  
